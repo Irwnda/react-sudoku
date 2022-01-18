@@ -1,23 +1,50 @@
+:root {
+  --lightGrid: #fff;
+  --lightNumber: #354961;
+  --lightEditableNumber: #0172e2;
+  --lightBorder: #354961;
+  --lightdisable: #f4f4f4;
+
+  --darkGrid: #181b1a;
+  --darkNumber: #a5bbcd;
+  --darkEditableNumber: #2d9afe;
+  --darkBorder: #2a3a4e;
+  --darkdisable: #1f2122;
+
+  --gridSize: 50px;
+}
+
 .row {
   display: grid;
   grid-template-columns: repeat(9, auto);
-  width: calc(9 * 50px);
+  width: calc(9 * var(--gridSize));
   margin: auto;
+  background: var(--lightGrid);
+  color: var(--lightNumber);
+  font-size: 2rem;
   .tile {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50px;
-    width: 50px;
-    box-shadow: 0px 0px 0px 1px #bdc3c7;
+    height: var(--gridSize);
+    width: var(--gridSize);
+    border: 1px solid var(--lightBorder);
+
     &.border_h {
-      box-shadow: 0px 0px 0px 1px #bdc3c7, inset 0px -2px 0 0 #34495e;
+      border-bottom: 3px solid var(--lightBorder);
+      // box-shadow: inset 0px -3px 0 0 var(--lightBorder);
     }
     &.border_v {
-      box-shadow: 0px 0px 0px 1px #bdc3c7, inset -2px 0 0 #34495e;
+      border-right: 3px solid var(--lightBorder);
+      // box-shadow: inset -3px 0 0 var(--lightBorder);
     }
     &.border_hv {
-      box-shadow: 0px 0px 0px 1px #bdc3c7, inset -2px -2px 0 #34495e;
+      border-bottom: 3px solid var(--lightBorder);
+      border-right: 3px solid var(--lightBorder);
+      // box-shadow: inset -3px -3px 0 var(--lightBorder);
     }
+  }
+  .disable {
+    background: var(--lightdisable);
   }
 }
