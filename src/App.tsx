@@ -19,7 +19,7 @@ function App() {
       <header className="App-header">
         <h1>Sudoku</h1>
       </header>
-      <Board difficulty={difficulty.hard} theme={theme.dark} />
+      <Board difficulty={difficulty.beginner} theme={theme.dark} />
     </div>
   );
 }

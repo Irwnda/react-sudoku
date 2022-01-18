@@ -4,6 +4,8 @@
   --lightEditableNumber: #0172e2;
   --lightBorder: #354961;
   --lightdisable: #f4f4f4;
+  --lightArea: #e3eaf4;
+  --lightAreaSelected: #badefb;
 
   --darkGrid: #181b1a;
   --darkNumber: #a5bbcd;
@@ -20,7 +22,7 @@
   width: calc(9 * var(--gridSize));
   margin: auto;
   background: var(--lightGrid);
-  color: var(--lightNumber);
+  color: var(--lightEditableNumber);
   font-size: 2rem;
   .tile {
     display: flex;
@@ -29,6 +31,7 @@
     height: var(--gridSize);
     width: var(--gridSize);
     border: 1px solid var(--lightBorder);
+    cursor: default;
 
     &.border_h {
       border-bottom: 3px solid var(--lightBorder);
@@ -45,6 +48,12 @@
     }
   }
   .disable {
-    background: var(--lightdisable);
+    color: var(--lightNumber);
+  }
+  .area {
+    background: var(--lightArea);
+  }
+  .selected {
+    background: var(--lightAreaSelected);
   }
 }
