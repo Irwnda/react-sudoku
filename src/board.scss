@@ -1,0 +1,23 @@
+.row {
+  display: grid;
+  grid-template-columns: repeat(9, auto);
+  width: calc(9 * 50px);
+  margin: auto;
+  .tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    box-shadow: 0px 0px 0px 1px #bdc3c7;
+    &.border_h {
+      box-shadow: 0px 0px 0px 1px #bdc3c7, inset 0px -2px 0 0 #34495e;
+    }
+    &.border_v {
+      box-shadow: 0px 0px 0px 1px #bdc3c7, inset -2px 0 0 #34495e;
+    }
+    &.border_hv {
+      box-shadow: 0px 0px 0px 1px #bdc3c7, inset -2px -2px 0 #34495e;
+    }
+  }
+}
