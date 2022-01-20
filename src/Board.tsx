@@ -6,6 +6,7 @@ import { difficulty, theme } from "./App";
 interface gameSetting {
   difficulty: difficulty;
   theme: theme;
+  number: number;
 }
 
 const puzzle = makepuzzle();
@@ -63,7 +64,7 @@ export default function Board(prop: gameSetting) {
   }, []);
 
   return (
-    <div className="game">
+    <div className="board">
       {pzlBoard.map((row, idx) => (
         <div className="row" key={idx}>
           {row.map((tile, idy) => (
@@ -86,6 +87,7 @@ export default function Board(prop: gameSetting) {
               }
               key={idy}
               onClick={(e) => setSelected([idx, idy])}
+              onContextMenu={(e) => setSelected([idx, idy])}
             >
               {hidden[idx][idy] ? tile + 1 : ""}
             </div>

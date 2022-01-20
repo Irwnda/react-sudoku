@@ -7,3 +7,20 @@
   color: white;
   margin-bottom: 1rem;
 }
+
+:root {
+  --lightGrid: #fff;
+  --lightNumber: #354961;
+  --lightEditableNumber: #0172e2;
+  --lightBorder: #354961;
+  --lightArea: #e3eaf4;
+  --lightAreaSelected: #badefb;
+
+  --darkGrid: #181b1a;
+  --darkNumber: #a5bbcd;
+  --darkEditableNumber: #2d9afe;
+  --darkBorder: #2a3a4e;
+  --darkdisable: #1f2122;
+
+  --gridSize: 45px;
+}

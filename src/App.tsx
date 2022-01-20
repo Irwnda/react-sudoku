@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import Board from "./Board";
+import Game from "./Game";
 
 export enum theme {
   dark,
@@ -14,12 +14,15 @@ export enum difficulty {
 }
 
 function App() {
+  const rightClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
   return (
-    <div className="App">
+    <div className="App" onContextMenu={(e) => rightClick(e)}>
       <header className="App-header">
         <h1>Sudoku</h1>
       </header>
-      <Board difficulty={difficulty.beginner} theme={theme.dark} />
+      <Game />
     </div>
   );
 }
