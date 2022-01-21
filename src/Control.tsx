@@ -9,13 +9,13 @@ import {
   faUndo,
 } from "@fortawesome/free-solid-svg-icons";
 
-interface prop {
+interface Prop {
   setInput: React.Dispatch<React.SetStateAction<number>>;
 }
 
 library.add(faUndo, faEraser, faPencilAlt, faLightbulb);
 
-export default function Control(prop: prop) {
+export default function Control(prop: Prop) {
   const numItems = Array.from({ length: 9 }, (_, i) => i + 1);
 
   return (

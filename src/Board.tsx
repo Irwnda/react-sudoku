@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { makepuzzle, solvepuzzle } from "sudoku";
 import "./board.scss";
 import { difficulty, theme } from "./App";
+import classNames from "classnames";
 
-interface gameProps {
+interface GameProps {
   difficulty: difficulty;
   theme: theme;
   number: number;
@@ -16,10 +17,6 @@ const pzlBoard: number[][] = [];
 for (let i = 0; i < solved.length; i += 9) {
   pzlBoard.push(solved.slice(i, i + 9));
 }
-// Beginner = 26-30
-// Easy = 36-40
-// Medium = 46-50
-// Hard = 56-60
 
 function initial2d() {
   const hidden: boolean[][] = [];
@@ -61,12 +58,12 @@ function getBoard(hidden: boolean[][]) {
 
   for (let i = 0; i < 9; i++)
     for (let j = 0; j < 9; j++)
-      !hidden[i][j] ? (board[i][j] = 0) : (board[i][j] = pzlBoard[i][j] + 1);
+      board[i][j] = !hidden[i][j] ? 0 : pzlBoard[i][j] + 1;
 
   return board;
 }
 
-export default function Board(prop: gameProps) {
+export default function Board(prop: GameProps) {
   const [selected, setSelected] = useState([0, 0]);
   const [hidden, setHid] = useState(initial2d);
   const [gameBoard, setBoard] = useState<number[][]>([]);
@@ -86,38 +83,39 @@ export default function Board(prop: gameProps) {
       newArray[x][y] = prop.number;
       setBoard(newArray);
     }
-    // if (!hidden[x][y] && gameBoard.length) gameBoard[x][y] = prop.number;
   }, [prop.number]);
 
   return (
     <div className="board">
       {gameBoard.map((row, idx) => (
         <div className="row" key={idx}>
-          {row.map((tile, idy) => (
-            <div
-              className={
-                "tile" +
-                (hidden[idx][idy] ? " disable" : "") +
-                (selected[0] === idx && selected[1] === idy
-                  ? " selected"
-                  : isSameArea(selected, [idx, idy])
-                  ? " area"
-                  : "") +
-                (idx % 3 === 2 && idy % 3 === 2 && idx !== 8 && idy !== 8
-                  ? " border_hv"
-                  : idx % 3 === 2 && idx !== 8
-                  ? " border_h"
-                  : idy % 3 === 2 && idy !== 8
-                  ? " border_v"
-                  : "")
-              }
-              key={idy}
-              onClick={() => setSelected([idx, idy])}
-              onContextMenu={() => setSelected([idx, idy])}
-            >
-              {gameBoard[idx][idy] ? tile : ""}
-            </div>
-          ))}
+          {row.map((tile, idy) => {
+            const isHidden = hidden[idx][idy];
+            const isSelectedTile = selected[0] === idx && selected[1] === idy;
+            const isRightBottom =
+              idx % 3 === 2 && idy % 3 === 2 && idx !== 8 && idy !== 8;
+
+            return (
+              <div
+                className={classNames(
+                  "tile",
+                  { disable: isHidden },
+                  { selected: isSelectedTile },
+                  {
+                    area: !isSelectedTile && isSameArea(selected, [idx, idy]),
+                  },
+                  { border_hv: isRightBottom },
+                  { border_h: !isRightBottom && idx % 3 === 2 && idx !== 8 },
+                  { border_v: !isRightBottom && idy % 3 === 2 && idy !== 8 }
+                )}
+                key={idy}
+                onClick={() => setSelected([idx, idy])}
+                onContextMenu={() => setSelected([idx, idy])}
+              >
+                {gameBoard[idx][idy] !== 0 ? tile : ""}
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>
