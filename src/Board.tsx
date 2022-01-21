@@ -63,6 +63,26 @@ function getBoard(hidden: boolean[][]) {
   return board;
 }
 
+function isSameNumber(board: number[][], idx: number, idy: number) {
+  if (board[idx][idy] === 0) return false;
+  for (let i = 0; i < 9; i++)
+    if (
+      (board[idx][i] === board[idx][idy] && idy !== i) ||
+      (board[i][idy] === board[idx][idy] && idx !== i)
+    )
+      return true;
+
+  const xAwal = Math.floor(idx / 3) * 3,
+    yAwal = Math.floor(idy / 3) * 3;
+  for (let i = xAwal; i < xAwal + 3; i++)
+    for (let j = yAwal; j < yAwal + 3; j++)
+      if (board[i][j] === board[idx][idy] && i !== idx && j !== idy) {
+        return true;
+      }
+
+  return false;
+}
+
 export default function Board(prop: GameProps) {
   const [selected, setSelected] = useState([0, 0]);
   const [hidden, setHid] = useState(initial2d);
@@ -79,9 +99,10 @@ export default function Board(prop: GameProps) {
   useEffect(() => {
     const [x, y] = selected;
     let newArray = [...gameBoard];
-    if (newArray.length && !hidden[x][y]) {
+    if (newArray.length && !hidden[x][y] && prop.number !== 0) {
       newArray[x][y] = prop.number;
       setBoard(newArray);
+      prop.setInput(0);
     }
   }, [prop.number]);
 
@@ -94,6 +115,7 @@ export default function Board(prop: GameProps) {
             const isSelectedTile = selected[0] === idx && selected[1] === idy;
             const isRightBottom =
               idx % 3 === 2 && idy % 3 === 2 && idx !== 8 && idy !== 8;
+            const isHaveSame = isSameNumber(gameBoard, idx, idy);
 
             return (
               <div
@@ -101,8 +123,12 @@ export default function Board(prop: GameProps) {
                   "tile",
                   { disable: isHidden },
                   { selected: isSelectedTile },
+                  { "same-number": isHaveSame && !isSelectedTile },
                   {
-                    area: !isSelectedTile && isSameArea(selected, [idx, idy]),
+                    area:
+                      !isSelectedTile &&
+                      !isHaveSame &&
+                      isSameArea(selected, [idx, idy]),
                   },
                   { border_hv: isRightBottom },
                   { border_h: !isRightBottom && idx % 3 === 2 && idx !== 8 },
