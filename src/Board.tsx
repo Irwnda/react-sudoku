@@ -3,10 +3,11 @@ import { makepuzzle, solvepuzzle } from "sudoku";
 import "./board.scss";
 import { difficulty, theme } from "./App";
 
-interface gameSetting {
+interface gameProps {
   difficulty: difficulty;
   theme: theme;
   number: number;
+  setInput: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const puzzle = makepuzzle();
@@ -54,18 +55,43 @@ function isSameArea(selected: number[], current: number[]) {
   );
 }
 
-export default function Board(prop: gameSetting) {
+function getBoard(hidden: boolean[][]) {
+  let board: number[][] = [];
+  for (let i = 0; i < 9; i++) board[i] = Array(9).fill(0);
+
+  for (let i = 0; i < 9; i++)
+    for (let j = 0; j < 9; j++)
+      !hidden[i][j] ? (board[i][j] = 0) : (board[i][j] = pzlBoard[i][j] + 1);
+
+  return board;
+}
+
+export default function Board(prop: gameProps) {
   const [selected, setSelected] = useState([0, 0]);
   const [hidden, setHid] = useState(initial2d);
-  const [gameBoard, setBoard] = useState([]);
+  const [gameBoard, setBoard] = useState<number[][]>([]);
 
   useEffect(() => {
     setHid(getHidden(prop.difficulty));
-  }, []);
+  }, [prop.difficulty]);
+
+  useEffect(() => {
+    setBoard(getBoard(hidden));
+  }, [hidden]);
+
+  useEffect(() => {
+    const [x, y] = selected;
+    let newArray = [...gameBoard];
+    if (newArray.length && !hidden[x][y]) {
+      newArray[x][y] = prop.number;
+      setBoard(newArray);
+    }
+    // if (!hidden[x][y] && gameBoard.length) gameBoard[x][y] = prop.number;
+  }, [prop.number]);
 
   return (
     <div className="board">
-      {pzlBoard.map((row, idx) => (
+      {gameBoard.map((row, idx) => (
         <div className="row" key={idx}>
           {row.map((tile, idy) => (
             <div
@@ -86,10 +112,10 @@ export default function Board(prop: gameSetting) {
                   : "")
               }
               key={idy}
-              onClick={(e) => setSelected([idx, idy])}
-              onContextMenu={(e) => setSelected([idx, idy])}
+              onClick={() => setSelected([idx, idy])}
+              onContextMenu={() => setSelected([idx, idy])}
             >
-              {hidden[idx][idy] ? tile + 1 : ""}
+              {gameBoard[idx][idy] ? tile : ""}
             </div>
           ))}
         </div>

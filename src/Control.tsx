@@ -49,7 +49,11 @@ export default function Control(prop: prop) {
       </div>
       <div className="numpad">
         {numItems.map((num) => (
-          <div className="numpad-item" key={num}>
+          <div
+            className="numpad-item"
+            key={num}
+            onClick={() => prop.setInput(num)}
+          >
             {num}
           </div>
         ))}

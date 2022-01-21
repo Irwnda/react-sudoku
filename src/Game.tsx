@@ -13,6 +13,7 @@ export default function Game() {
         difficulty={difficulty.beginner}
         theme={theme.dark}
         number={inputNumber}
+        setInput={setInputNumber}
       />
       <Control setInput={setInputNumber} />
     </div>
